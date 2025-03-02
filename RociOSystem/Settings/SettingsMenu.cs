@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Epic.OnlineServices;
 using RichHudFramework.IO;
 using RichHudFramework.UI;
 using RichHudFramework.UI.Client;
@@ -10,7 +11,13 @@ namespace RociOS
 {
     public sealed partial class ROSMain
     {
-        private static TextPage helpMain;
+        private TextPage helpMain;
+        private Config config;
+
+        public ROSMain(Config config)
+        {
+            this.config = config;
+        }
 
         public void InitSettingsMenu()
         {
@@ -58,12 +65,12 @@ namespace RociOS
             TerminalOnOffButton RociOSToggleBox = new TerminalOnOffButton
             {
                 Name = "RociOS toggle",
-                Value =  RociOSConfig.RociOSEnabled,
-                CustomValueGetter = () => RociOSConfig.RociOSEnabled,
-                ControlChangedHandler = (sender, args) => RociOSConfig.RociOSEnabled = (sender as TerminalOnOffButton).Value,
+                Value = config.RociOSEnabled,
+                CustomValueGetter = () => config.RociOSEnabled,
+                ControlChangedHandler = (sender, args) => config.RociOSEnabled = (sender as TerminalOnOffButton).Value,
                 ToolTip = new RichText(ToolTip.DefaultText)
                 {
-                "Enables/disables RociOSystem"
+                    "Enables/disables RociOSystem"
                 },
             };
 
@@ -78,14 +85,14 @@ namespace RociOS
             };
         }
 
-        private static ControlCategory GetSuitAntennaSettings()
+        private ControlCategory GetSuitAntennaSettings()
         {
             var SuitAntennaToggleBox = new TerminalOnOffButton()
             {
                 Name = "Auto Suit Antenna Disabler ",
-                Value = RociOSConfig.DisableSuitBroadcasting,
-                CustomValueGetter = () => RociOSConfig.DisableSuitBroadcasting,
-                ControlChangedHandler = (RichHudFramework.EventHandler) ((sender, args) => RociOSConfig.DisableSuitBroadcasting = (sender as TerminalOnOffButton).Value),
+                Value = config.DisableSuitBroadcasting,
+                CustomValueGetter = () => config.DisableSuitBroadcasting,
+                ControlChangedHandler = (RichHudFramework.EventHandler) ((sender, args) => config.DisableSuitBroadcasting = (sender as TerminalOnOffButton).Value),
                 ToolTip = new RichText(ToolTip.DefaultText)
                 {
                     "Disables suits broadcasting Disabler"
@@ -103,14 +110,14 @@ namespace RociOS
             };
         }
 
-        private static ControlCategory AutoFactionChat()
+        private ControlCategory AutoFactionChat()
         {
             var AutoFactionChatToggleBox = new TerminalOnOffButton()
             {
                 Name = "Auto Faction Chat",
-                Value = RociOSConfig.EnableAutoFactionChat,
-                CustomValueGetter = () => RociOSConfig.EnableAutoFactionChat,
-                ControlChangedHandler = ((sender, args) => RociOSConfig.EnableAutoFactionChat = (sender as TerminalOnOffButton).Value),
+                Value = config.EnableAutoFactionChat,
+                CustomValueGetter = () => config.EnableAutoFactionChat,
+                ControlChangedHandler = ((sender, args) => config.EnableAutoFactionChat = (sender as TerminalOnOffButton).Value),
                 ToolTip = new RichText(ToolTip.DefaultText)
                 {
                     "Enables auto faction chat System"
@@ -128,7 +135,7 @@ namespace RociOS
             };
         }
         
-        private static ControlCategory GetHelpSettings()
+        private ControlCategory GetHelpSettings()
         {
             var openHelp = new TerminalButton()
             {

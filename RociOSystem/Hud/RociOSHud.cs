@@ -20,6 +20,8 @@ namespace RociOS.Hud
         
         public static RociOSHud Instance { get; private set; }
         
+        private ROSMain rosMain;
+
         public RociOSHud() : base(true, true)
         {
             if (Instance == null)
@@ -59,7 +61,8 @@ namespace RociOS.Hud
                 
                 Log.Info("Initializing Hud");
 
-                new ROSMain().InitSettingsMenu();
+                rosMain = new ROSMain(new Config());
+                rosMain.InitSettingsMenu();
             }
         }
         
@@ -69,7 +72,7 @@ namespace RociOS.Hud
         {
             if (ExceptionHandler.IsClient)
             {
-                //BvConfig.Save();
+                
             }
 
             if (ExceptionHandler.Unloading)

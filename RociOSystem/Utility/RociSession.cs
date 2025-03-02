@@ -27,6 +27,7 @@ namespace RociOS.utilities
     {
         bool antennaDisabled = false;
         bool characterHasBeenDead = false;
+        private ROSMain rosMain;
 
         public override void Init(MyObjectBuilder_SessionComponent sessionComponent)
         {
@@ -65,7 +66,11 @@ namespace RociOS.utilities
         private void ResetCallback()
         {}
 
-        public void InitCallback() => new ROSMain().InitSettingsMenu();
+        public void InitCallback()
+        {
+            rosMain = new ROSMain(new Config());
+            rosMain.InitSettingsMenu();
+        }
 
         protected new virtual void UnloadData()
         {

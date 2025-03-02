@@ -1,5 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+# 
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RociOSystem", "RociOSystem\RociOSystem.csproj", "{A061FC6C-713E-42CD-B413-151AC8A5074C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{51D21C35-7ECF-493B-A2A0-A3C823D9F8D3}"
@@ -10,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Directory.Build.props = Directory.Build.props
 		verify_props.bat = verify_props.bat
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassLibrary1", "..\..\training\ClassLibrary1\ClassLibrary1.csproj", "{C31F3296-F7D7-4F38-AC07-CF5CDDC4B692}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,5 +26,9 @@ Global
 		{A061FC6C-713E-42CD-B413-151AC8A5074C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A061FC6C-713E-42CD-B413-151AC8A5074C}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 		{A061FC6C-713E-42CD-B413-151AC8A5074C}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{C31F3296-F7D7-4F38-AC07-CF5CDDC4B692}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C31F3296-F7D7-4F38-AC07-CF5CDDC4B692}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C31F3296-F7D7-4F38-AC07-CF5CDDC4B692}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C31F3296-F7D7-4F38-AC07-CF5CDDC4B692}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

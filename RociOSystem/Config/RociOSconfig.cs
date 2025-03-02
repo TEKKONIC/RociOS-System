@@ -6,22 +6,22 @@ using ProtoBuf;
 
 namespace RociOS
 {
-    [ProtoContract]
-    public class RociOSConfig
+    [ProtoContract] [Serializable]
+    public class Config
     {
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
         private const string ConfigFileName = "RociOSConfig.bin";
 
         [ProtoMember(1)]
-        public static bool RociOSEnabled { get; set; } = true;
+        public bool RociOSEnabled { get; set; } = true;
         [ProtoMember(2)]
-        public static bool EnableAutoFactionChat { get; set; } = true;
+        public bool EnableAutoFactionChat { get; set; } = true;
         [ProtoMember(3)]
-        public static bool DisableSuitBroadcasting { get; set; } = true;
+        public bool DisableSuitBroadcasting { get; set; } = true;
         [ProtoMember(4)]
         public bool GrabSingleItem { get; set; } = true;
 
-        public static RociOSConfig Load()
+        public static Config Load()
         {
             Log.Info("Attempting to load configuration.");
             try
@@ -32,19 +32,19 @@ namespace RociOS
                     using (var file = File.OpenRead(ConfigFileName))
                     {
                         Log.Info("Config file read successfully. Deserializing Protobuf.");
-                        return Serializer.Deserialize<RociOSConfig>(file);
+                        return Serializer.Deserialize<Config>(file);
                     }
                 }
                 else
                 {
                     Log.Warn($"Config file {ConfigFileName} not found. Using default settings.");
-                    return new RociOSConfig();
+                    return new Config();
                 }
             }
             catch (Exception ex)
             {
                 Log.Error(ex, "Failed to load config file. Using default settings.");
-                return new RociOSConfig();
+                return new Config();
             }
         }
 

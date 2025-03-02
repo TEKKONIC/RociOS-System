@@ -9,14 +9,13 @@ using NLog.Targets;
 using VRage.FileSystem;
 using VRage.Plugins;
 
-
 namespace RociOS
 {
     public class RociOSPlugin : IPlugin, IDisposable 
     {
         public static readonly Logger Log = LogManager.GetCurrentClassLogger();
         
-        private readonly RociOSConfig config;
+        private readonly Config config;
         
         private static RociOSPlugin Instance { get; set; }
 
@@ -26,7 +25,7 @@ namespace RociOS
             try
             {
                 // Configure NLog programmatically
-                var config = new LoggingConfiguration();
+                var loggingConfig = new LoggingConfiguration();
 
                 var consoleTarget = new ConsoleTarget("console")
                 {
@@ -45,16 +44,16 @@ namespace RociOS
                     ArchiveFileName = logFilePath
                 };
 
-                config.AddTarget(consoleTarget);
-                config.AddTarget(fileTarget);
+                loggingConfig.AddTarget(consoleTarget);
+                loggingConfig.AddTarget(fileTarget);
 
-                config.AddRule(LogLevel.Info, LogLevel.Fatal, consoleTarget);
-                config.AddRule(LogLevel.Debug, LogLevel.Fatal, fileTarget);
+                loggingConfig.AddRule(LogLevel.Info, LogLevel.Fatal, consoleTarget);
+                loggingConfig.AddRule(LogLevel.Debug, LogLevel.Fatal, fileTarget);
 
-                LogManager.Configuration = config;
+                LogManager.Configuration = loggingConfig;
 
                 Log.Info("RociOS constructor called.");
-                this.config = RociOSConfig.Load(); 
+                this.config = Config.Load(); 
             }
             catch (Exception ex)
             {
@@ -74,13 +73,13 @@ namespace RociOS
                 throw new InvalidOperationException("Configuration is null.");
             }
 
-            if (RociOSConfig.RociOSEnabled)
+            if (config.RociOSEnabled)
             {
                 new Harmony("RociOSHud").PatchAll(Assembly.GetExecutingAssembly());
                 Log.Info("RociOS Hud enabled.");
             }
 
-            if (RociOSConfig.EnableAutoFactionChat)
+            if (config.EnableAutoFactionChat)
             {
                 new Harmony("RociOSession").PatchAll(Assembly.GetExecutingAssembly());
                 Log.Info("AutoFactionChat loaded");
