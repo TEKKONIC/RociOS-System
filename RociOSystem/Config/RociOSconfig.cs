@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.IO;
 using Newtonsoft.Json;
 using NLog;
@@ -7,21 +8,26 @@ using ProtoBuf;
 namespace RociOS
 {
     [ProtoContract] [Serializable]
-    public class Config
+    public class RociConfig
     {
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
         private const string ConfigFileName = "RociOSConfig.bin";
 
         [ProtoMember(1)]
+        [DefaultValue(true)]
         public bool RociOSEnabled { get; set; } = true;
+        
         [ProtoMember(2)]
-        public bool EnableAutoFactionChat { get; set; } = true;
+        [DefaultValue(true)]
+        public bool EnableAutoFactionChat { get; set; }
         [ProtoMember(3)]
+        [DefaultValue(true)]
         public bool DisableSuitBroadcasting { get; set; } = true;
         [ProtoMember(4)]
+        [DefaultValue(true)]
         public bool GrabSingleItem { get; set; } = true;
 
-        public static Config Load()
+        public static RociConfig Load()
         {
             Log.Info("Attempting to load configuration.");
             try
@@ -32,19 +38,19 @@ namespace RociOS
                     using (var file = File.OpenRead(ConfigFileName))
                     {
                         Log.Info("Config file read successfully. Deserializing Protobuf.");
-                        return Serializer.Deserialize<Config>(file);
+                        return Serializer.Deserialize<RociConfig>(file);
                     }
                 }
                 else
                 {
                     Log.Warn($"Config file {ConfigFileName} not found. Using default settings.");
-                    return new Config();
+                    return new RociConfig();
                 }
             }
             catch (Exception ex)
             {
                 Log.Error(ex, "Failed to load config file. Using default settings.");
-                return new Config();
+                return new RociConfig();
             }
         }
 

@@ -11,16 +11,18 @@ using VRage.Plugins;
 
 namespace RociOS
 {
-    public class RociOSPlugin : IPlugin, IDisposable 
+    public class RociOSystem : IPlugin, IDisposable 
     {
         public static readonly Logger Log = LogManager.GetCurrentClassLogger();
         
-        private readonly Config config;
+        private readonly RociConfig RociConfig;
         
-        private static RociOSPlugin Instance { get; set; }
+        public static string ChatName => "RociOSystem";
+        
+        private static RociOSystem Instance { get; set; }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        public RociOSPlugin()
+        public RociOSystem()
         {
             try
             {
@@ -53,7 +55,7 @@ namespace RociOS
                 LogManager.Configuration = loggingConfig;
 
                 Log.Info("RociOS constructor called.");
-                this.config = Config.Load(); 
+                this.RociConfig = RociConfig.Load(); 
             }
             catch (Exception ex)
             {
@@ -65,27 +67,27 @@ namespace RociOS
         public void Init(object gameInstance)
         {
             Log.Info("==== RociOS Plugin Online ====");
-            RociOSPlugin.Instance = this;
+            RociOSystem.Instance = this;
 
-            if (config == null)
+            if (RociConfig == null)
             {
                 Log.Error("Configuration is null. Initialization cannot proceed.");
                 throw new InvalidOperationException("Configuration is null.");
             }
 
-            if (config.RociOSEnabled)
+            if (RociConfig.RociOSEnabled)
             {
                 new Harmony("RociOSHud").PatchAll(Assembly.GetExecutingAssembly());
                 Log.Info("RociOS Hud enabled.");
             }
 
-            if (config.EnableAutoFactionChat)
+            if (RociConfig.EnableAutoFactionChat)
             {
                 new Harmony("RociOSession").PatchAll(Assembly.GetExecutingAssembly());
                 Log.Info("AutoFactionChat loaded");
             }
 
-            if (config.GrabSingleItem)
+            if (RociConfig.GrabSingleItem)
             {
                 Log.Debug("GrabSingleItem: Patching");
                 new Harmony("GrabSingleItem").PatchAll(Assembly.GetExecutingAssembly());
@@ -93,7 +95,7 @@ namespace RociOS
             }
         }
         
-        public void Dispose() => RociOSPlugin.Instance = null;
+        public void Dispose() => RociOSystem.Instance = null;
 
         public void Update()
         { }

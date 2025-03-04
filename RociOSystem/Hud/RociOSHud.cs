@@ -61,7 +61,7 @@ namespace RociOS.Hud
                 
                 Log.Info("Initializing Hud");
 
-                rosMain = new ROSMain(new Config());
+                rosMain = new ROSMain(new RociConfig());
                 rosMain.InitSettingsMenu();
             }
         }
