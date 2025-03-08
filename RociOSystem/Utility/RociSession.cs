@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Draygo.API;
 using Epic.OnlineServices;
 using RichHudFramework.Client;
 using RichHudFramework.Internal;
@@ -39,6 +40,8 @@ namespace RociOS.utilities
         private static RociConfig RociConfig;
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
         private static bool antennaDisabledFlag = false;
+        private HudAPIv2 hudAPI;
+        private HudAPIv2.HUDMessage hudMessage;
 
         public static void SetAntennaDisabledFlag(bool isDisabled)
         {

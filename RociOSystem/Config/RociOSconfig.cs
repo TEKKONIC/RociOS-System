@@ -27,6 +27,11 @@ namespace RociOS
         [DefaultValue(true)]
         public bool GrabSingleItem { get; set; } = true;
 
+        public float HudX { get; set; } = -0.4f;
+        public float HudY { get; set; } = -0.525f;
+        public float HudZ { get; set; } = -0.1f;
+        public bool HudVisible { get; set; } = true;
+
         public static RociConfig Load()
         {
             Log.Info("Attempting to load configuration.");

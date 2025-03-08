@@ -663,6 +663,7 @@
     <Compile Include="Commands\Commands.cs" />
     <Compile Include="Config\RociOSconfig.cs" />
     <Compile Include="Hud\HelpText.cs" />
+    <Compile Include="Hud\HudAPIv2.cs" />
     <Compile Include="Hud\RociOSHud.cs" />
     <Compile Include="RociOSystem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

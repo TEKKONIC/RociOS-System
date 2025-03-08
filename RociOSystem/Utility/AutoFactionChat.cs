@@ -12,15 +12,22 @@ namespace RociOS.utilities
     internal static class MyChatSystemPatch
     {
         private static bool messageShown = false;
+        public static bool isAutoFactionChatEnabled = true;
 
-        private static MethodBase TargetMethod()
+        public static void SetAutoFactionChatEnabled(bool isEnabled)
+        {
+            isAutoFactionChatEnabled = isEnabled;
+            messageShown = false;
+        }
+
+        private static MethodBase TargetMethod()    
         {
             return AccessTools.Constructor(typeof(MyChatSystem));
         }
 
         private static void Postfix(ref ChatChannel ___m_currentChannel)
         {
-            if (!messageShown)
+            if (isAutoFactionChatEnabled && !messageShown)
             {
                 ___m_currentChannel = ChatChannel.Faction;
                 Log.Info("Switched to Faction Channel");

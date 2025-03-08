@@ -4,6 +4,7 @@ using RichHudFramework.UI.Client;
 using RociOS.Hud;
 using NLog.Fluent;
 using NLog;
+using VRage.Game;
 
 namespace RociOS
 {
@@ -41,7 +42,7 @@ namespace RociOS
                         Name = "Settings",
                         CategoryContainer = 
                         {
-                            GetRociOSSettings(),
+                            GetRociOSHUD(),
                             GetSuitAntennaSettings(),
                             AutoFactionChat(),
                             GetHelpSettings(),
@@ -59,13 +60,13 @@ namespace RociOS
             }
         }
 
-        private ControlCategory GetRociOSSettings()
+        private ControlCategory GetRociOSHUD()
         {
             Log.Debug("GetRociOSSettings started.");
 
-            TerminalOnOffButton RociOSToggleBox = new TerminalOnOffButton
+            TerminalOnOffButton RociOSHud = new TerminalOnOffButton
             {
-                Name = "RociOS toggle",
+                Name = "RociOSystem Hud",
                 Value = RociConfig.RociOSEnabled,
                 CustomValueGetter = () => RociConfig.RociOSEnabled,
                 ControlChangedHandler = (sender, args) => 
@@ -75,19 +76,77 @@ namespace RociOS
                 },
                 ToolTip = new RichText(ToolTip.DefaultText)
                 {
-                    "Enables/disables RociOSystem"
+                    "Enables/disables RociOSystem Hud- Features Coming Soon",
                 },
             };
 
             Log.Debug("GetRociOSSettings completed.");
 
+            var HudpositionX = new TerminalSlider()
+            {
+                Name = "HudpositionX",
+                Min = -1f,
+                Max = 1f,
+                Value = RociConfig.HudX,
+                CustomValueGetter = () => (float)RociConfig.HudX,
+                ControlChangedHandler = (sender, args) =>
+                {
+                var slider = sender as TerminalSlider;
+                RociConfig.HudX = (float)slider.Value;
+                slider.ValueText = RociConfig.HudX.ToString();
+                },
+                ToolTip = new RichText(ToolTip.DefaultText)
+                { 
+                     "x axis of the RociOS Hud Terminal"
+                },
+            };
+
+            var HudpositionY = new TerminalSlider()
+            {
+                Name = "HudpositionY",
+                Min = -1f,
+                Max = 1f,
+                Value = RociConfig.HudY,
+                CustomValueGetter = () => (float)RociConfig.HudY,
+                ControlChangedHandler = (sender, args) =>
+                {
+                    var slider = sender as TerminalSlider;
+                    RociConfig.HudY = (float)slider.Value;
+                    slider.ValueText = RociConfig.HudY.ToString();
+                },
+                ToolTip = new RichText(ToolTip.DefaultText)
+                {
+                    "y axis of the RociOS Hud Terminal"
+                }
+            };
+
+            var HudpositionZ = new TerminalSlider()
+            {
+                Name = "HudpositionZ",
+                Min = -1f,
+                Max = 1f,
+                Value = RociConfig.HudZ,
+                CustomValueGetter = () => (float)RociConfig.HudZ,
+                ControlChangedHandler = (sender, args) =>
+                {
+                    var slider = sender as TerminalSlider;
+                    RociConfig.HudZ = (float)slider.Value;
+                    slider.ValueText = RociConfig.HudZ.ToString();
+                },
+                ToolTip = new RichText(ToolTip.DefaultText)
+                {
+                    "Z axis of the RociOS Hud Terminal"
+                }
+            };
+
             return new ControlCategory
             {
-                HeaderText = "RociOSToggle",
-                SubheaderText = "Configure RociOS Plugin",
+                HeaderText = "RociOSystem Hud Interface",
+                SubheaderText = "Configure RociOSystem Hud -  Features Coming Soon",
                 TileContainer =
                 {
-                    new ControlTile { RociOSToggleBox }
+                    new ControlTile { RociOSHud },
+                    new ControlTile() { HudpositionX, HudpositionY, HudpositionZ },
                 },
             };
         }
@@ -104,7 +163,6 @@ namespace RociOS
                     RociConfig.DisableSuitBroadcasting = (sender as TerminalOnOffButton).Value;
                     Log.Debug($"Suit antenna disabler changed to: {RociConfig.DisableSuitBroadcasting}");
                     
-                    // Trigger an event or callback to apply the changes immediately
                     OnDisableSuitBroadcastingChanged(RociConfig.DisableSuitBroadcasting);
                 },
                 ToolTip = new RichText("Disables suits broadcasting Disabler")
@@ -116,16 +174,14 @@ namespace RociOS
                 SubheaderText = "Configures the Auto Disable Suit Antenna Function",
                 TileContainer =
                 {
-                    new ControlTile() { SuitAntennaToggleBox }
+                    new ControlTile() { SuitAntennaToggleBox },
                 },
             };
         }
 
-        // Define the event or callback method
         private void OnDisableSuitBroadcastingChanged(bool isDisabled)
         {
-            // Implement the logic to apply the changes immediately
-            // For example, update the game state or notify other components
+            
             if (isDisabled)
             {
                 RociOS.utilities.RociSession.SetAntennaDisabledFlag(true);
@@ -173,13 +229,13 @@ namespace RociOS
         {
             if (isAFactionChatDisabled)
             {
-                // Implement the logic when Auto Faction Chat is disabled
-                Log.Info("Auto Faction Chat is now disabled.");
+                RociOS.utilities.MyChatSystemPatch.SetAutoFactionChatEnabled(true);
+                Log.Info("Auto Faction Chat is now enabled");
             }
             else
             {
-                // Implement the logic when Auto Faction Chat is enabled
-                Log.Info("Auto Faction Chat is now enabled");
+                RociOS.utilities.MyChatSystemPatch.SetAutoFactionChatEnabled(false);
+                Log.Info("Auto Faction Chat is now disabled.");
             }
         }
         
@@ -197,18 +253,37 @@ namespace RociOS
             };
             
 
-            var title2 = new ControlTile()
+            var loadCfg = new TerminalButton()
             {
-                //loadConfig,
-                //saveConfig,
-                //resetConfig,
+                Name = "Load config",
+                ControlChangedHandler = (sender, args) => RociConfig.Load()
+            };
+
+            var saveCfg = new TerminalButton()
+            {
+                Name = "Save config",
+                ControlChangedHandler = (sender, args) => RociConfig.Save()
+            };
+
+            var resetCfg = new TerminalButton()
+            {
+                Name = "Reset config",
+                ControlChangedHandler = (sender, args) => 
+                    {}
+            };
+
+            var tile2 = new ControlTile()
+            {
+                loadCfg,
+                saveCfg,
+                resetCfg
             };
 
             return new ControlCategory()
             {
                 HeaderText = "Help",
                 SubheaderText = "Help text and Config Control",
-                TileContainer = { title1, title2 }
+                TileContainer = { title1, tile2 },
             };
         }
     }  

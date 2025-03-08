@@ -18,13 +18,13 @@ namespace RociOS.Hud
         {
             return new RichText(GlyphFormat.White)
             {
-                { " Update 3.0:\n\n", subheader },
+                { " Update 1.1:\n\n", subheader },
                 
-                { "Settings Menu:\n", subheader},
+                { "Settings Menu:\n\n", subheader},
 
                 $"By default, this settings menu can be toggled by pressing ", { "F2.", highlight }, " From here, you can configure block ",
                 
-                { "Chat Commands:\n", subheader},
+                { "Chat Commands:\n\t", subheader},
 
                 $"The chat commands in this mod are largely redundant; the functionality they provide is also provided by the settings menu. ",
                 $"If you prefer to use the chat commands for whatever reason, here they are:\n\n",
@@ -34,7 +34,7 @@ namespace RociOS.Hud
 
                 $"• help:\t\t\tYou are here.\n",
                 $"• save:\t\t\tSaves the current configuration\n",
-                $"• load:\t\t\tLoads configuration from the config file\n",
+                $"• load:\t\t\tLoads configuration from the config file\n\n\n",
 
                 $"Example: \"/Roci Disable RociOS \"\n\n",
             };
