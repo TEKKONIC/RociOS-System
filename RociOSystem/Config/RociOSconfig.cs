@@ -19,7 +19,7 @@ namespace RociOS
         
         [ProtoMember(2)]
         [DefaultValue(true)]
-        public bool EnableAutoFactionChat { get; set; }
+        public bool EnableAutoFactionChat { get; set; } = true;
         [ProtoMember(3)]
         [DefaultValue(true)]
         public bool DisableSuitBroadcasting { get; set; } = true;
